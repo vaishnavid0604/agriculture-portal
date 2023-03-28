@@ -14,7 +14,7 @@ git clone https://github.com/vaishnavid0604/agriculture-portal.git
 ```
 pip install -r requirements.txt
 ```
-3. Change OpenAI, Weather and News API Keys.
+3. Add <a href="https://newsapi.org/">News API</a>, <a href="https://openweathermap.org/api">OpenWeatherMap API</a>, <a href="https://dashboard.stripe.com/account/apikeys">Stripe API</a> and <a href="https://platform.openai.com/account/api-keys">OpenAI API</a> Keys.
 4. Import database from db folder.
 5. Run Apache web server using XAMPP.
 
@@ -25,8 +25,9 @@ pip install -r requirements.txt
 - Rainfall Prediction
 - Yield Prediction
 - Agriculture realetd news using News API
-- Chatbot using OPENAI's gpt-3.5-turbo model
-- Weather Forecast upto 4 days using Weather API
+- Chatbot using OpenAI's gpt-3.5-turbo model
+- Dynamically changing quotes using OpenAI's API
+- Weather Forecast upto 4 days using OpenWeatherMap API
 - Direct crop sales to customer with real payment interface using Stripe API
 
 
@@ -106,10 +107,6 @@ The Crop Management System dataset includes the following features:
 - Fertilizer Recommendation: Input `Temperature`, `Humidity`, `Soil Moisture`, `Soil Type`, `Crop Type`, `Nitrogen`, `Phosphorous`, and `Potassium` to get recommended fertilizer for that crop and location.
 - Rainfall Prediction: Input `Subdivision` and `Year` to get rainfall prediction for that year.
 - Yield Prediction: Input `State_Name`, `District_Name`, `Crop_Year`, `Season`, `Crop`, `Area`, `Production` to get predicted yields for that crop and location.
-
-## Contributors
-- Vaishnavi D
-- ChatGPT 3.5 Turbo
 
 ## License
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
