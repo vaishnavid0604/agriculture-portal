@@ -15,7 +15,8 @@ git clone https://github.com/vaishnavid0604/agriculture-portal.git
 pip install -r requirements.txt
 ```
 3. Change OpenAI, Weather and News API Keys.
-4. Run Apache web server using XAMPP.
+4. Import database from db folder.
+5. Run Apache web server using XAMPP.
 
 ## Features
 - Crop Prediction
