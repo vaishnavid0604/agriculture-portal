@@ -4,6 +4,43 @@
 - IT also has direct crop sales to customer with real payment interface using Stripe API.
 - Other supporting features are Chatbot using OPENAI's gpt-3.5-turbo model, Weather Forecast upto 4 days using Weather API, Agriculture realetd news using News API.
 
+## Pre Requisites
+### Get Below API Keys
+- [News API](https://newsapi.org/)
+- [OpenWeatherMap API](https://openweathermap.org/api)
+- [Stripe API](https://dashboard.stripe.com/account/apikeys)
+- [OpenAI API](https://platform.openai.com/account/api-keys)
+
+### Gmail SMTP Setup
+1. Setup  [app password for gmail](https://support.google.com/accounts/answer/185833?hl=en)
+2. Open `fsend_otp.php` and `csend_otp.php` files and change username and password.
+
+```php
+function smtp_mailer($to,$subject, $msg){
+	require_once("../smtp/class.phpmailer.php");
+	$mail = new PHPMailer(); 
+	$mail->IsSMTP(); 
+	$mail->SMTPDebug = 0; 
+	$mail->SMTPAuth = TRUE; 
+	$mail->SMTPSecure = 'ssl'; 
+	$mail->Host = "smtp.gmail.com";
+	$mail->Port = 465; 
+	$mail->IsHTML(true);
+	$mail->CharSet = 'UTF-8';
+	$mail->Username = "username@gmail.com";    // Change it to yours email address
+        $mail->Password = "password"; 	
+        $mail->SetFrom("username@gmail.com");   // App Password, (16 character Key)
+	$mail->Subject = $subject;
+	$mail->Body =$msg;
+	$mail->AddAddress($to);
+	if(!$mail->Send()){
+		return 0;
+	}else{
+		return 1;
+	}
+}
+```
+
 ## Installation
 
 1. Clone the repository to your local machine.
@@ -14,9 +51,13 @@ git clone https://github.com/vaishnavid0604/agriculture-portal.git
 ```
 pip install -r requirements.txt
 ```
-3. Add <a href="https://newsapi.org/">News API</a>, <a href="https://openweathermap.org/api">OpenWeatherMap API</a>, <a href="https://dashboard.stripe.com/account/apikeys">Stripe API</a> and <a href="https://platform.openai.com/account/api-keys">OpenAI API</a> Keys.
-4. Import database from db folder.
-5. Run Apache web server using XAMPP.
+3. Add API Keys to respective files.
+- News API Key to `fnewsfeed.php`
+- OpenWeatherMap API Key to `fweather_forecast.php`
+- Stripe API Key to `customer/stripePayment/config.php`
+- OpenAI API Key to `index.php` and `fchatgpt.php`
+5. Import database from db folder.
+6. Run Apache web server using XAMPP.
 
 ## Features
 - Crop Prediction
