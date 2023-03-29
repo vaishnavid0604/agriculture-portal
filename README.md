@@ -56,8 +56,8 @@ pip install -r requirements.txt
 - OpenWeatherMap API Key to `fweather_forecast.php`
 - Stripe API Key to `customer/stripePayment/config.php`
 - OpenAI API Key to `index.php` and `fchatgpt.php`
-5. Import database from db folder.
-6. Run Apache web server using XAMPP.
+4. Import database from db folder.
+5. Run Apache web server using XAMPP.
 
 ## Features
 - Crop Prediction

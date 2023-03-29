@@ -123,7 +123,7 @@
 
 		   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 		   <a class="dropdown-item" href="fchatgpt.php"> <i class="text-dark fad fa-robot"></i>Chat Bot​</a>
-			<a class="dropdown-item" href="fweather_prediction.php"><i class="text-dark fas fa-cloud"></i> Weather Forecast​</a>
+			<a class="dropdown-item" href="fweather_forecast.php"><i class="text-dark fas fa-cloud"></i> Weather Forecast​</a>
 			<a class="dropdown-item" href="fnewsfeed.php"> <i class="text-dark fas fa-newspaper"></i>News Feed​</a>
 		  </div>
 		</div>
