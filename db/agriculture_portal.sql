@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2023 at 08:38 AM
+-- Generation Time: Apr 03, 2023 at 09:27 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -73,7 +73,7 @@ CREATE TABLE `contactus` (
 --
 
 INSERT INTO `contactus` (`c_id`, `c_name`, `c_mobile`, `c_email`, `c_address`, `c_message`) VALUES
-(6, 'vaishnavid', '9878749887', 'vaishnavi.19cs109@sode-edu.in', 'udupi', 'its qworking');
+(6, 'vaishnavid', '9878749887', 'vaishnavi.19cs109@sode-edu.in', 'udupi', 'its working');
 
 -- --------------------------------------------------------
 
@@ -127,7 +127,7 @@ CREATE TABLE `custlogin` (
 --
 
 INSERT INTO `custlogin` (`cust_id`, `cust_name`, `password`, `email`, `address`, `city`, `pincode`, `state`, `phone_no`, `otp`) VALUES
-(1, 'customer', 'password', 'agricultureportal007@gmail.com', 'Udupi, Bantakal', 'Mysore', '576210', 'Karnataka', '9878787898', 0);
+(1, 'customer', 'password', 'agricultureportal01@gmail.com', 'Udupi, Bantakal', 'Mysore', '576210', 'Karnataka', '9878787898', 0);
 
 -- --------------------------------------------------------
 
@@ -820,7 +820,7 @@ CREATE TABLE `farmerlogin` (
 --
 
 INSERT INTO `farmerlogin` (`farmer_id`, `farmer_name`, `password`, `email`, `phone_no`, `F_gender`, `F_birthday`, `F_State`, `F_District`, `F_Location`, `otp`) VALUES
-(44, 'Agriculture Portal', 'password', 'agricultureportal007@gmail.com', '9878987898', 'Male', '2001-09-22', 'Karnataka', 'Mangalore', 'Bantakal', 0);
+(44, 'Agriculture Portal', 'password', 'agricultureportal01@gmail.com', '9878987898', 'Male', '2001-09-22', 'Karnataka', 'Mangalore', 'Bantakal', 0);
 
 -- --------------------------------------------------------
 
@@ -842,9 +842,10 @@ CREATE TABLE `farmer_crops_trade` (
 --
 
 INSERT INTO `farmer_crops_trade` (`trade_id`, `farmer_fkid`, `Trade_crop`, `Crop_quantity`, `costperkg`, `msp`) VALUES
-(103, 44, 'arhar', 10, 40, 60),
+(103, 44, 'arhar', 8, 40, 60),
 (104, 44, 'arhar', 2, 39, 60),
-(105, 44, 'bajra', 5, 15, 23);
+(105, 44, 'bajra', 2, 15, 23),
+(106, 44, 'barley', 8, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -860,6 +861,19 @@ CREATE TABLE `farmer_history` (
   `farmer_price` int(50) NOT NULL,
   `date` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `farmer_history`
+--
+
+INSERT INTO `farmer_history` (`History_id`, `farmer_id`, `farmer_crop`, `farmer_quantity`, `farmer_price`, `date`) VALUES
+(25, 44, 'bajra', 1, 23, '01/04/2023'),
+(26, 44, 'bajra', 1, 23, '03/04/2023'),
+(27, 44, 'barley', 1, 2, '03/04/2023'),
+(28, 44, 'arhar', 1, 60, '03/04/2023'),
+(29, 44, 'bajra', 1, 23, '03/04/2023'),
+(30, 44, 'barley', 1, 2, '03/04/2023'),
+(31, 44, 'arhar', 1, 60, '03/04/2023');
 
 -- --------------------------------------------------------
 
@@ -877,9 +891,9 @@ CREATE TABLE `production_approx` (
 --
 
 INSERT INTO `production_approx` (`crop`, `quantity`) VALUES
-('arhar', 12),
-('bajra', 5),
-('barley', 0),
+('arhar', 10),
+('bajra', 2),
+('barley', 8),
 ('cotton', 0),
 ('gram', 0),
 ('jowar', 0),
@@ -1034,7 +1048,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT for table `contactus`
@@ -1064,13 +1078,13 @@ ALTER TABLE `farmerlogin`
 -- AUTO_INCREMENT for table `farmer_crops_trade`
 --
 ALTER TABLE `farmer_crops_trade`
-  MODIFY `trade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `trade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT for table `farmer_history`
 --
 ALTER TABLE `farmer_history`
-  MODIFY `History_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `History_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `state`

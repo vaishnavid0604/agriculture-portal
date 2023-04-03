@@ -11,83 +11,7 @@ $query4 = "SELECT * from custlogin where email='$user_check'";
               $row4 = mysqli_fetch_assoc($ses_sq4);
               $para1 = $row4['cust_id'];
               $para2 = $row4['cust_name'];
-
-unset($_COOKIE["crop"]);
-unset($_COOKIE["quantity"]);
-unset($_COOKIE["TradeId"]);
-unset($_COOKIE["x"]);
-unset($_COOKIE["flag"]);			  
-?>
-
-
-<?php 
-		if(isset($_POST["add_to_cart"]))
-		{
-			if(isset($_SESSION["shopping_cart"]))
-			{
-				$item_array_id = array_column($_SESSION["shopping_cart"], "item_id");
-				if(!in_array($_GET["id"], $item_array_id))
-				{
-				
-					$item_array = array(
-						'item_id'			=>	$_GET["id"],
-						'item_name'			=>	$_POST["hidden_name"],
-						'item_price'		=>	$_POST["hidden_price"],
-						'item_quantity'		=>	$_POST["quantity"]
-					);
-					array_push($_SESSION['shopping_cart'], $item_array);
-				}
-				else
-				{
-					echo '<script>alert("Item Already Added")</script>';
-				}
-			}
-			else
-			{
-				$item_array = array(
-					'item_id'			=>	$_GET["id"],
-					'item_name'			=>	$_POST["hidden_name"],
-					'item_price'		=>	$_POST["hidden_price"],
-					'item_quantity'		=>	$_POST["quantity"]
-				);
-				$_SESSION["shopping_cart"][0] = $item_array;
-			}
-		}
-
-		if(isset($_GET["action"]))
-		{
-			if($_GET["action"] == "delete")
-			{
-				foreach($_SESSION["shopping_cart"] as $keys => $values)
-				{
-					if($values["item_id"] == $_GET["id"])
-					{
-						unset($_SESSION["shopping_cart"][$keys]);
-						$b=$_GET["id"];
-						
-						$query5="SELECT Trade_crop from farmer_crops_trade where trade_id= $b";
-						$result5 = mysqli_query($conn, $query5);
-						$row5 = $result5->fetch_assoc(); 
-						$a=$row5["Trade_crop"];
-						
-						
-						$query6="DELETE FROM `cart` WHERE `cropname` = '".$a."'";
-						$result6 = mysqli_query($conn, $query6); 
-
-						echo '<script>alert("Item Removed")</script>';
-						echo '<script>window.location="cbuy_crops.php"</script>';
-		
-
-					     
-						
-					}
-				}
-			}
-		}
-
-
-
-
+		  
 ?>
 
 <!DOCTYPE html>
@@ -140,12 +64,11 @@ unset($_COOKIE["flag"]);
 
                 <table class="table table-striped table-bordered table-responsive-md btn-table  ">
 
-                    <thead class=" text-white">
+                    <thead class=" text-white text-center">
                     <tr>
 					
                         <th>Crop Name</th>
                         <th>Quantity (in KG)</th>
-						<th>Availability</th>
                         <th>Price (in Rs)</th>
 						<th>Add Item</th>
 	
@@ -155,166 +78,64 @@ unset($_COOKIE["flag"]);
                     <tbody>
 					
                     <tr>
-						<form role="form"  id="buycrops"  method="POST" enctype="multipart/form-data">   
+					
+			
+						 
+<form method="POST" action="cbuy_redirect.php">
 
 						<td>
-                        <div class="form-group" >
-						<select id="crops" name="crops" class="form-control ">
-							<option value="">Select Crop</option>
-  							<option value="arhar">Arhar</option>
-							<option value="bajra">Bajra</option>  
-							<option value="barley">Barley</option>
-							<option value="cotton">Cotton</option>	
-							<option value="gram">Gram</option>
-							<option value="jowar">Jowar</option>
-							<option value="jute">Jute</option>
-							<option value="lentil">Lentil</option>
-							<option value="maize">Maize</option>
-							<option value="moong">Moong</option>
-							<option value="ragi">Ragi</option>
-  							<option value="rice">Rice</option>
-							<option value="soyabean">Soyabean</option>
-							<option value="urad">Urad</option>
-							<option value="wheat">Wheat</option>
-						</select>					
+                        <div class="form-group" >						
+									<?php  									
+						// query database table for crops with quantity greater than zero
+						$sql = "SELECT crop FROM production_approx where quantity > 0 ";
+						$result = $conn->query($sql);
+
+						// populate dropdown menu options with the crop names
+						echo "<select id='crops' name='crops' class='form-control text-dark'>";
+						echo "<option value=' '>Select Crop</option>";
+						while($row = $result->fetch_assoc()) {							
+							echo "<option value='" . $row["crop"] . "'>" . $row["crop"] . "</option>";
+						}
+						echo "</select>";
+						
+
+						?>	
+											
 						</div>					
 						</td>
-						
+			
+			
+<input hidden name="tradeid" id="tradeid"  value="">
+
+
+
+						<td>   
+						  <div class="form-group">     
+							<input id="quantity" type="number" placeholder="Available Quantity" max="10" name="quantity" required class="form-control text-dark">   
+						  </div> 
+						</td>
+
+
                         <td>
                         <div class="form-group" >
-                        <input id="quantity" type="number" name="trade_farmer_cropquantity"  required class="form-control required">
+                        <input id="price" type="text" value="0" name="price"  readonly class="form-control text-dark">
                         </div>
-						</td>														
-
-						</form>
-
-
-	
-<script>
-document.getElementById("crops").addEventListener("change", function() {
-  document.getElementById("quantity").addEventListener("change", function() {
-    var quantity = jQuery('#quantity').val();
-	  var crops = jQuery('#crops').val();
-
-    jQuery.ajax({
-      url: 'ccheck_availability.php',
-      type: 'post',
-      data: { crops: crops, quantity: quantity },
-      success: function(response) {
-		      try {
-				  var result = JSON.parse(response);
-				  
-				  var crop = result.cropR;
-				  var quantity = result.quantityR;
-				  var TradeId = result.TradeIdR;
-				  var flag = result.flagR;
-				  var x = result.xR;
-				  
-				  console.log(result);
-				      if (flag == 1) {
-					  $("#availability").html("Yes, Available");
-					  $("#price").html(x);
-					} else {
-					  $("#availability").html("Out of Stock");
-					}
-			} catch (error) {
-				  console.log('Error:', error);
-			}
-									$.ajax({
-			  url: 'ctest_data.php',
-			  type: 'POST',
-			  data: { crop: crop, quantity: quantity, TradeId: TradeId, x: x, flag: flag },
-			  success: function(new_response) {
-					console.log(new_response.crop);
-			  }
-			});
-
-		}
-	});
-  });
-});
-</script>
-
-
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
-
-$flag=0;
-$x=0;
-$quantity=0;
-$TradeId=0;
-$crop=' ';
-
-	
-	$crop = $_COOKIE['crop'];
-	$quantity = $_COOKIE['quantity'];
-	$TradeId = $_COOKIE['TradeId'];
-	$x = $_COOKIE['x'];
-	$flag = $_COOKIE['flag'];
-
-
-echo "The crop is $crop and the quantity is $quantity";
-
-
-?>
-
-
-
-
-							<td>
-						<div id="availability"></div>
+						</td>	
 						
+						
+						 
+						<td>
+						 <div class="form-group" >
+						<button class="btn btn-success form-control" name="add_to_cart" type="submit" disabled >Add To Cart </button>
+						</div>
+						</td>
+							    
+	</form>
+	
 		
-                        
-						</td>
-
-						<td>
-                       <div id="price"></div>
-						
-						</td>
-
-
-
-						<td>
-						<form method="POST" action="buy_crops.php?action=add&id=<?php echo $TradeId ?>">
-                            <input hidden name="hidden_name"  value="<?php echo $crop ?>">
-							<input hidden name="hidden_price" value="<?php echo $x ?>">
-                            <input hidden name="quantity" value="<?php echo $quantity ?>">
-    
-                            <button class="sc-add-to-cart"
-                            <?php if ($flag == '0'){ ?> disabled <?php   } ?>
-                            name="add_to_cart" type="submit">
-                            Add To Cart
-                            </button>
-                        </form>
-
-						</td>
-
-						<?php
-						if(isset($_POST ['add_to_cart'])){
-							$crop=$_POST['hidden_name'];
-							$quantity=$_POST['quantity'];
-							$price=$_POST['hidden_price'];
-							$query4="INSERT INTO `cart`(`cropname`, `quantity`, `price`) 
-  							VALUES ('$crop','$quantity','$price');";
-  							$result4 = mysqli_query($conn, $query4);
-							
-							unset($_COOKIE["crop"]);
-							unset($_COOKIE["quantity"]);
-							unset($_COOKIE["TradeId"]);
-							unset($_COOKIE["x"]);
-							unset($_COOKIE["flag"]);
-						}
-
-						?>
-
-					
 						</tr>
 						</tbody>
-
                         </table> 
-
 
 			<h3 class=" text-white">Order Details</h3>
 			<div class="table-responsive">
@@ -322,8 +143,7 @@ echo "The crop is $crop and the quantity is $quantity";
 					<tr class=" bg-dange">
 						<th width="40%">Item Name</th>
 						<th width="10%">Quantity (in KG)</th>
-						<th width="20%">Price (in Rs.)</th>
-					
+						<th width="20%">Price (in Rs.)</th>				
 						<th width="5%">Action</th>
 					</tr>
 					<?php
@@ -333,50 +153,89 @@ echo "The crop is $crop and the quantity is $quantity";
 						foreach($_SESSION["shopping_cart"] as $keys => $values)
 						{
 					?>
+
+	
 					<tr class=" bg-white">
 						<td><?php echo ucfirst($values["item_name"]); ?></td>
 						<td><?php echo $values["item_quantity"]; ?></td>
 						<td>Rs. <?php echo $values["item_price"]; ?> </td>
 				
-						<td><a href="cbuy_crops.php?action=delete&id=<?php echo $values["item_id"]; ?>" type="button" class="btn btn-warning btn-block" >Remove</a></td>
+					<td><a href="cbuy_crops.php?action=delete&id=<?php echo $values["item_id"]; ?>" type="button" class="btn btn-warning btn-block" >Remove</a></td>
 					
 					</tr>
+
+<?php
+
+		if(isset($_GET["action"]))
+		{
+			if($_GET["action"] == "delete")
+			{
+				foreach($_SESSION["shopping_cart"] as $keys => $values)
+				{
+					if($values["item_id"] == $_GET["id"])
+					{
+						unset($_SESSION["shopping_cart"][$keys]);
+						$b=$_GET["id"];
+						
+						$query5="SELECT Trade_crop from farmer_crops_trade where trade_id= $b";
+						$result5 = mysqli_query($conn, $query5);
+						$row5 = $result5->fetch_assoc(); 
+						$a=$row5["Trade_crop"];
+						
+						
+						$query6="DELETE FROM `cart` WHERE `cropname` = '".$a."'";
+						$result6 = mysqli_query($conn, $query6); 
+
+						echo '<script>alert("Item Removed")</script>';
+						echo '<script>window.location="cbuy_crops.php"</script>';
+		
+
+					     
+						
+					}
+				}
+			}
+		}
+?>
 
 					<?php
 							$total = $total +  $values["item_price"];
 							$_SESSION['Total_Cart_Price']=$total;
 						}
 					?>
-					<tr>
-						<td colspan="2" align="right">Total</td>
+					<tr class="text-dark">
+						<td colspan="2" align="right" >Total</td>
 						<td align="right">Rs. <?php echo number_format($total,2); ?></td>
 
 						<td>
 						
-						<?php
-							require_once "StripePayment/config.php";
+			<?php
+
 						
-							foreach ($products as $productID => $attributes) {
-								$TotalCartPrice=$_SESSION['Total_Cart_Price']*100;
-											echo '
-												<br>
-												<form action="StripePayment/stripeIPN.php?id='.$productID.'" method="POST">
-												<script 
-													src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-													data-key="'.$stripeDetails['publishableKey'].'"
-													data-amount="'.$TotalCartPrice.'"
-													data-currency="inr"
-													data-name="Agriculture Payment Portal"
-													data-description="Crop Payment"
-													data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-													data-label="Buy Now"
-													data-locale="auto">
-												</script>
-												</form>
-								';
-							}
-    					?>
+							require_once "StripePayment/config.php";
 							
+								$TotalCartPrice=$_SESSION['Total_Cart_Price']*100;
+								
+								$session = \Stripe\Checkout\Session::create([
+									'payment_method_types' => ['card'],
+									'line_items' => [[
+										'price_data' => [
+											'product' => 'prod_NdAYaoDLX3DnMY',
+											'unit_amount' => $TotalCartPrice,
+											'currency' => 'inr',
+										],
+										'quantity' => 1,
+									]],
+									'mode' => 'payment',
+									'success_url' => 'http://localhost/projects/agri2/customer/cupdatedb.php',
+									'cancel_url' => 'http://localhost/projects/agri2/customer/cbuy_crops.php',
+								]);
+
+												
+
+    					?>
+						<button class="btn btn-info form-control" name="pay" type="submit" id="checkout-button">Pay</button>
+											
 						
 						</td>
 					</tr>
@@ -403,15 +262,102 @@ echo "The crop is $crop and the quantity is $quantity";
 </section>
 	   <?php require("footer.php");?>
 
-	   <script>
+													<script src="https://js.stripe.com/v3/"></script>
+												<script>
+												const stripe = Stripe('<?php echo $stripeDetails['publishableKey']; ?>');
+
+												const checkoutButton = document.getElementById('checkout-button');
+
+												checkoutButton.addEventListener('click', () => {
+												  stripe.redirectToCheckout({
+													sessionId: '<?php echo $session->id; ?>'
+												  }).then(function (result) {
+													if (result.error) {
+													  alert(result.error.message);
+													}
+												  });
+												});
+												</script>
+												
+												
+<script>
 				$(document).ready( function () {
     $('#myTable').DataTable();
 } );
 </script>
 
-</body>
-</html>		
+						
+<script> 
+document.getElementById("crops").addEventListener("change", function() {   
+  var crops = jQuery('#crops').val();   
+  jQuery.ajax({     
+    url: 'ccheck_quantity.php',     
+    type: 'post',     
+    data: 'crops=' + crops,     
+    success: function(result) { 
+		      try {
+				 var result = JSON.parse(result);
+				  
+				 var cquantity = parseInt(result.quantityR);
+				 var TradeId = parseInt(result.TradeIdR);  
+				  console.log(result);
 
+				 if (cquantity > 0) {         
+						document.getElementById("quantity").placeholder = cquantity;         
+					   
+						document.getElementById("tradeid").value = TradeId;
+					  } else {         
+						document.getElementById("quantity").placeholder = "Select Crop";       
+					  } 
+
+			} catch (error) {
+				  console.log('Error:', error);
+			}
+
+	  
+    }   
+  }); 
+}); 
+</script>    
+
+<script>
+  document.getElementById("quantity").addEventListener("change", function() {
+const addToCartBtn = document.querySelector('[name="add_to_cart"]');
+    var quantity = jQuery('#quantity').val();
+	  var crops = jQuery('#crops').val();
 		
-					
+    jQuery.ajax({
+      url: 'ccheck_price.php',
+      type: 'post',
+      data: { crops: crops, quantity: quantity },
+      success: function(result) {
+			var cprice = parseInt(result);
+			if(cprice>0){
+				document.getElementById("price").value = cprice;
+				addToCartBtn.removeAttribute('disabled');
+			}
+			else{
+				document.getElementById("price").value = "0";
+			}
+		}
+	});
+});
+</script>
+
+	<script>
+
+const quantityInput = document.getElementById("quantity");
+
+quantityInput.addEventListener("change", () => {
+  const max = document.getElementById("quantity").placeholder;
+  
+  if (quantityInput.value > max) {
+    alert(`Maximum quantity exceeded. Please enter a quantity less than or equal to ${max}.`);
+    quantityInput.value = max;
+  }
+});
+</script>
+	
+</body>
+</html>						
            

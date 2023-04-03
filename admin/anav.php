@@ -76,18 +76,18 @@
             </li>
 		
 		
-		  <!--     
+		      
 		  
 			<li class="nav-item">
               <a href="aproducedcrop.php" class="nav-link">
                 <span class="text-white nav-link-inner--text font-weight-bold"
-                  ><i class="text-white fad fa-store-alt"></i> Crop Production</span
+                  ><i class="text-white fad fa-store-alt"></i> Crop Stock</span
                 >
               </a>
             </li>
 			
 	
-			 -->				 		
+			 			 		
 
 			
 			<li class="nav-item">

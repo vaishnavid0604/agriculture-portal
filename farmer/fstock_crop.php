@@ -75,7 +75,7 @@ $query4 = "SELECT * from farmerlogin where email='$user_check'";
 		<tbody>	  
 							  
 						<?php 
-	$sql = "SELECT crop, quantity FROM production_approx";
+	$sql = "SELECT crop, quantity FROM production_approx where quantity > 0";
 
 								$query = mysqli_query($conn,$sql);
 

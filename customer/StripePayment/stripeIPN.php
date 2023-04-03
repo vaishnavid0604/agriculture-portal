@@ -25,7 +25,7 @@ $dbname="agriculture_portal";
 
 
 	if (!isset($_POST['stripeToken']) || !isset($products[$productID])) {
-		header("Location: ../buy_crops.php");
+		header("Location: ../cbuy_crops.php");
 		exit();
 	}
 
@@ -80,7 +80,7 @@ $dbname="agriculture_portal";
 
 
 	
-	header("location: ../updatedb.php");
+	header("location: ../cupdatedb.php");
 	//send an email
 	//store information to the database
 	

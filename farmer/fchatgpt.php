@@ -111,7 +111,7 @@ function clearContent(){
 }
 	
 const url = new URL(window.location.href);
-const apiKey = "sk-xxxxxxx";   // Enter your apikey here
+const apiKey = "sk-xxx";   // Enter your apikey here
 const chatbox = $("#chatbox");
 const userInput = $("#userInput");
 const sendButton = $("#sendButton");

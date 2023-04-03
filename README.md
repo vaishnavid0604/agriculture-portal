@@ -65,11 +65,12 @@ pip install -r requirements.txt
 - Fertilizer Recommendation
 - Rainfall Prediction
 - Yield Prediction
+- OTP Verification through mail
 - Agriculture realetd news using News API
 - Chatbot using OpenAI's gpt-3.5-turbo model
 - Dynamically changing quotes using OpenAI's API
 - Weather Forecast upto 4 days using OpenWeatherMap API
-- Direct crop sales to customer with real payment interface using Stripe API
+- Direct crop sales to customer with real time payment interface using Stripe API
 
 
 ## Technologies Used
