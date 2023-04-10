@@ -29,7 +29,7 @@ $query4 = "SELECT * from farmerlogin where email='$user_check'";
 			padding-bottom: 0;
 			border-radius: 10px;
 			display: inline-block;
-			max-width: 90%;
+			max-width: 85%;
 		
 			
 			word-wrap: break-word;
@@ -44,6 +44,19 @@ $query4 = "SELECT * from farmerlogin where email='$user_check'";
 		.right-side {
 			background-color: lightgreen;
 			float: right;
+		}		
+			
+		.popup {
+			position: fixed;
+			bottom: 20vh;
+			left: 50%;
+			transform: translateX(-50%);
+			background-color: rgba(0, 0, 0, 0.6);
+			color: white;
+			border-radius: 5px;
+			padding: 10px 20px;
+			font-size: 16px;
+			display: none;
 		}
 				
  </style>
@@ -73,16 +86,20 @@ $query4 = "SELECT * from farmerlogin where email='$user_check'";
 			
 				<div class="card text-white bg-gradient-white mt--6">
 				
-				  <div class="card-header bg-gradient-secondary">
-				  <span class=" text-default display-4" ><img src="../assets/img/chatgpt.svg" class=" rounded-circle img-fluid" width=""> Chat Bot </span> 	
-						<span class="text-right">
-							<button class="btn btn-danger float-right" onclick="clearContent()">Clear Chat</button>
-						</span>				  
-				  </div>
+				<div class="card-header bg-gradient-secondary d-flex">
 
-				  
-				<div class="card-body chat-box rounded p1" id="chatbox" >		</div>
-							
+					<span class="text-default display-4">
+						<img src="../assets/img/chatgpt.svg" class="rounded-circle img-fluid" width="" alt="Chat GPT Logo"> Chat GPT
+					</span>
+
+					<div class="ml-auto">
+						<button class="btn btn-info" onclick="window.print()">Print</button>
+						<button class="btn btn-danger mr-2 " onclick="clearContent()">Clear Chat</button>					
+					</div>								
+				</div>
+
+				 <div class="card-body chat-box rounded p1" id="chatbox"><span id="copy-popup" class="popup">Copied!</span></div>
+				 							
 							 <div class="card-footer bg-gradient-secondary">
                                 <div class="form-group row">
                                     <div class="col-md-10 mb-1">
@@ -111,7 +128,7 @@ function clearContent(){
 }
 	
 const url = new URL(window.location.href);
-const apiKey = "sk-xxx";   // Enter your apikey here
+const apiKey = "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";   // Enter your apikey here
 const chatbox = $("#chatbox");
 const userInput = $("#userInput");
 const sendButton = $("#sendButton");
@@ -157,13 +174,12 @@ userInput.on("keydown", (event) => {
 });
 
 function fetchMessages() {
-    try {
         var settings = {
             url: "https://api.openai.com/v1/chat/completions",
             method: "POST",
             timeout: 0,
             headers: {
-                Authorization: "Bearer " + apiKey,
+                "Authorization": "Bearer " + apiKey,
                 "Content-Type": "application/json"
             },
             data: JSON.stringify({
@@ -178,24 +194,41 @@ function fetchMessages() {
                 "content": message.content
             });
 			const htmlText = window.markdownit().render(message.content);
-			const botMessageHtml = '<pre><div class="message left-side " >' + htmlText + '</div></pre>';
-            chatbox.append(botMessageHtml);		
+			const botMessageHtml = '<pre><div class="message left-side" id="' + CryptoJS.MD5(htmlText) + '">' + htmlText + '</div><i class="far fa-clipboard ml-1 btn btn-outline-dark" id="' + CryptoJS.MD5(htmlText) + '-copy"></i></pre>';             
+
+            chatbox.append(botMessageHtml);	
+
+			// Add event listener to the copy icon 
+			var copyIcon = document.getElementById(CryptoJS.MD5(htmlText) + '-copy'); 
+			var copyText = document.getElementById(CryptoJS.MD5(htmlText));
+
+			copyIcon.addEventListener("click", function() {
+			  var tempTextarea = document.createElement("textarea");
+			  tempTextarea.value = copyText.textContent;
+			  document.body.appendChild(tempTextarea);
+			  tempTextarea.select();
+			  document.execCommand("copy");
+			  document.body.removeChild(tempTextarea);
+			  
+			  // Display "Copied!" popup
+			  var copyPopup = document.getElementById("copy-popup");
+			  copyPopup.style.display = "block";
+			  setTimeout(function() {
+				copyPopup.style.display = "none";
+			  }, 1000); // Display for 1 second
+			});
+			
 			chatbox.animate({ scrollTop: 20000000 }, "slow");
             sendButton.val("SUBMIT");
             sendButton.prop("disabled", false);
         }).fail(function(jqXHR, textStatus, errorThrown) {
             sendButton.val("Error");
-			let errorMessage = '<pre><div class="message left-side  text-danger" >' + text('Please provide chatGPT apiKey and try again.') + '</div></pre>';
+			let errorText = 'Please provide chatGPT apiKey and try again.';
+			let errorMessage = '<pre><div class="message left-side  text-danger" >' + errorText + '</div></pre>';
             chatbox.append(errorMessage);
 			chatbox.animate({ scrollTop: 20000000 }, "slow");
         });
-    } catch (error) {
-        sendButton.val("Error");
-		let errorMessage2 = '<pre><div class="message left-side  text-danger" >' + text('Please provide chatGPT apiKey and try again.') + '</div></pre>';
-            chatbox.append(errorMessage2);
-			chatbox.animate({ scrollTop: 20000000 }, "slow");
     }
-}
  </script>
   
 </body>
