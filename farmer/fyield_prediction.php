@@ -84,40 +84,96 @@ $query4 = "SELECT * from farmerlogin where email='$user_check'";
 
 									<td>
 										<div class="form-group ">
-											<select id="district-select" name="district" class="form-control" required>
-												  <option value="">Select District</option>
-												</select>
-												<script language="javascript">print_karnataka_districts("district-select");</script>
+										<select id="district" name="district" class="form-control" required>
+										  <option value="">Select a district</option>
+										  <option value="BAGALKOT">Bagalkot</option>
+										  <option value="BANGALORE_RURAL">Bangalore Rural</option>
+										  <option value="BELGAUM">Belgaum</option>
+										  <option value="BELLARY">Bellary</option>
+										  <option value="BENGALURU_URBAN">Bengaluru Urban</option>
+										  <option value="BIDAR">Bidar</option>
+										  <option value="BIJAPUR">Bijapur</option>
+										  <option value="CHAMARAJANAGAR">Chamarajanagar</option>
+										  <option value="CHIKBALLAPUR">Chikballapur</option>
+										  <option value="CHIKMAGALUR">Chikmagalur</option>
+										  <option value="CHITRADURGA">Chitradurga</option>
+										  <option value="DAKSHIN_KANNAD">Dakshin Kannad</option>
+										  <option value="DAVANGERE">Davangere</option>
+										  <option value="DHARWAD">Dharwad</option>
+										  <option value="GADAG">Gadag</option>
+										  <option value="GULBARGA">Gulbarga</option>
+										  <option value="HAVERI">Haveri</option>
+										  <option value="HASSAN">Hassan</option>
+										  <option value="KODAGU">Kodagu</option>
+										  <option value="KOLAR">Kolar</option>
+										  <option value="KOPPAL">Koppal</option>
+										  <option value="MANDYA">Mandya</option>
+										  <option value="MYSORE">Mysore</option>
+										  <option value="RAMANAGARA">Ramanagara</option>
+										  <option value="RAICHUR">Raichur</option>
+										  <option value="SHIMOGA">Shimoga</option>
+										  <option value="TUMKUR">Tumkur</option>
+										  <option value="UDUPI">Udupi</option>
+										  <option value="UTTAR_KANNAD">Uttar Kannad</option>
+										  <option value="YADGIR">Yadgir</option>
+										</select>
+
 										</div>
                                     </td>
 									
 									<td>
 										<div class="form-group ">
 									
-													<select name="Season" class="form-control">
+													<select name="Season" class="form-control" id="season" required>
 													<option value="">Select Season ...</option>
 													<option name="Kharif" value="Kharif">Kharif</option>
-													<option name="Whole Year" value="Whole Year">Whole Year</option>
-													<option name="Autumn" value="Autumn">Autumn</option>
 													<option name="Rabi" value="Rabi">Rabi</option>
 													<option name="Summer" value="Summer">Summer</option>
-													<option name="Winter" value="Winter">Winter</option>
-												
+													<option name="WholeYear" value="WholeYear">Whole Year</option>
+											
 													</select>
 										</div>
 
 									</td>
 									
 									<td>
-                                    	<div class="form-group">
-	
-											<select id="crop-select" name="crops" class="form-control" required>
-												  <option value="">Select Crop</option>
-												</select>
-												<script language="javascript">print_crop_options("crop-select");</script>
+                                    	<div class="form-group" >
+										<select id="crop" class="form-control" name="crops" required>
+									  <option value="">Select crop</option>
+									</select>
+											
 										</div>
                                     </td>
-									
+									<script> 
+document.getElementById("season").addEventListener("change", function() {  
+ 
+const districtDropdown = document.getElementById('district');
+const seasonDropdown = document.getElementById('season');
+const cropDropdown = document.getElementById('crop');
+
+ console.log(districtDropdown);
+   console.log(seasonDropdown);
+  console.log(cropDropdown);
+  
+  const selectedDistrict = districtDropdown.value;
+  const selectedSeason = seasonDropdown.value;
+
+  // Clear the current crop options
+  cropDropdown.innerHTML = '<option value="">Select crop</option>';
+  
+  // If both district and season are selected, add the corresponding crop options to the dropdown
+if (selectedDistrict && selectedSeason) {
+  const options = cropOptions[selectedDistrict][selectedSeason];
+  for (const option of options) {
+    const optionElement = document.createElement('option');
+    optionElement.value = option; // Set the value to the option text
+    optionElement.text = option;
+    cropDropdown.appendChild(optionElement);
+  }
+}
+  
+}); 
+</script>  
 									<td>
                                     	<div class="form-group">
 											<input type = "number" step=0.01 name="area" placeholder="Area in Hectares" required class="form-control">

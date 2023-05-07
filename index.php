@@ -400,7 +400,7 @@
 
 <script>
 
-const apiKey = "sk-xxx";   // Enter your apikey here
+const apiKey = "sk-xxxxxxxxxxxxxxxxxxx";   // Enter your apikey here
 const chatbox = document.getElementById("quote");
 const authorN = document.getElementById("author");
 
@@ -451,10 +451,12 @@ function fetchMessages() {
 			authorN.append(authorName);
 			
         }).fail(function(jqXHR, textStatus, errorThrown) {
+			chatbox.innerHTML = '';  
 			let errorMessage = 'Farming looks mighty easy when your plow is a pencil, and youre a thousand miles from the corn field.';
 			chatbox.append(errorMessage);
         });
     } catch (error) {
+		chatbox.innerHTML = '';  
 		let errorMessage2 = 'Farming looks mighty easy when your plow is a pencil, and youre a thousand miles from the corn field.';
 		chatbox.append(errorMessage2);
     }

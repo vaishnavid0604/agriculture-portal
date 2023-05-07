@@ -227,8 +227,8 @@ $query4 = "SELECT * from custlogin where email='$user_check'";
 										'quantity' => 1,
 									]],
 									'mode' => 'payment',
-									'success_url' => 'http://localhost/projects/agri2/customer/cupdatedb.php',
-									'cancel_url' => 'http://localhost/projects/agri2/customer/cbuy_crops.php',
+									'success_url' => 'http://localhost/agriculture_portal/customer/cupdatedb.php',
+									'cancel_url' => 'http://localhost/agriculture_portal/customer/cbuy_crops.php',
 								]);
 
 												

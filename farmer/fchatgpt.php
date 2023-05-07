@@ -128,7 +128,7 @@ function clearContent(){
 }
 	
 const url = new URL(window.location.href);
-const apiKey = "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";   // Enter your apikey here
+const apiKey = "sk-xxxxxxxxxxxxxxxxxxxxxxxxxx";   // Enter your apikey here
 const chatbox = $("#chatbox");
 const userInput = $("#userInput");
 const sendButton = $("#sendButton");
@@ -222,12 +222,12 @@ function fetchMessages() {
             sendButton.val("SUBMIT");
             sendButton.prop("disabled", false);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            sendButton.val("Error");
-			let errorText = 'Please provide chatGPT apiKey and try again.';
+			sendButton.val("Error");
+			let errorText = "Error: " + jqXHR.responseJSON.error.message;
 			let errorMessage = '<pre><div class="message left-side  text-danger" >' + errorText + '</div></pre>';
-            chatbox.append(errorMessage);
+			chatbox.append(errorMessage);
 			chatbox.animate({ scrollTop: 20000000 }, "slow");
-        });
+		});
     }
  </script>
   
